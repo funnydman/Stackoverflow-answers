@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  nginx:
+    image: "nginx:alpine"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./index.html:/etc/nginx/html/index.html
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\";'"
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    expose:
+      - "8765"
+

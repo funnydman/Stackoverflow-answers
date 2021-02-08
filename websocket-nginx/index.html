@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
+<form action="#" id="greeting">
+    <label>
+        <input type="text" placeholder="enter your name..." name="name">
+    </label>
+    <input type="submit" value="send">
+</form>
+<div id="root"></div>
+
+<script>
+
+    // Create WebSocket connection.
+    const socket = new WebSocket('wss://localhost/websocket');
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+        const root = document.getElementById("root");
+        root.innerText = "Message from server: " + event.data;
+    });
+
+    const form = document.getElementById("greeting");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        socket.send(e.target.name.value);
+    })
+
+
+</script>
+</body>
+</html>
